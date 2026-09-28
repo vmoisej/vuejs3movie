@@ -20,6 +20,13 @@
       <div class="mb-4">
         <textarea v-model="post.content" placeholder="Content" class="p-4 border border-gray-200 w-full"></textarea>
       </div>
+
+      <div v-if="errors.length > 0" class="mb-4">
+        <div v-for="error in errors" class="text-red-600">
+          {{ error }}
+        </div>
+      </div>
+
       <div>
         <a @click.prevent="storePost" gref="#" class="inline block px-3 py-3 bg-sky-600 border border-sky-700 text-white">Save Post</a>
       </div>
@@ -48,7 +55,7 @@
 </template>
 
 <script setup>
-import  {reactive, ref} from "vue"
+import {reactive, ref, watch} from "vue"
 
 const posts = ref([
   {
@@ -65,6 +72,7 @@ const posts = ref([
   },
 ])
 const isModalOpen = ref(false)
+const errors = ref([])
 const post = reactive({
   title: '',
   content: '',
@@ -75,6 +83,9 @@ let editedPost = reactive({
 })
 
 const storePost = function() {
+
+  if (isNotValidated()) return
+
   posts.value.unshift({
     title: post.title,
     content: post.content
@@ -106,6 +117,24 @@ const updatePost = function() {
 const deletePost = function(post) {
   posts.value = posts.value.filter( postItem => postItem != post)
 }
+
+const isNotValidated = function() {
+  errors.value = []
+  if (post.title === '') {
+    errors.value.push('The title field is required!')
+  }
+  if (post.content === '') {
+    errors.value.push('The content field is required!')
+  }
+
+  return errors.value.length > 0
+}
+
+watch(post, (newVal, oldVal) => {
+  // console.log(newVal)
+  // console.log(oldVal)
+  errors.value = []
+})
 </script>
 
 <style>
