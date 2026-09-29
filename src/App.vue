@@ -32,26 +32,26 @@
       </div>
     </div>
     <div>
-      <PostItem v-for="post in posts" :post="post" @deletepost="deletePost" @editpost="editPost"></PostItem>
+      <PostItem v-for="post in posts" :post="post" @editpost="editPost"></PostItem>
     </div>
    </div>
 </template>
 
 <script setup>
-import {reactive, ref, watch} from "vue"
+import {provide, reactive, ref, watch} from "vue"
 import PostItem from "@/components/post/PostItem.vue"
 
 const posts = ref([
   {
-    title: 'first',
+    title: 'FIRST',
     content: 'First post'
   },
   {
-    title: 'second',
+    title: 'SECOND',
     content: 'Second post'
   },
   {
-    title: 'third',
+    title: 'THIRD',
     content: 'Third post'
   },
 ])
@@ -65,6 +65,8 @@ let editedPost = reactive({
   title: '',
   content: '',
 })
+
+provide('posts', posts)
 
 const storePost = function() {
 
@@ -96,10 +98,6 @@ const updatePost = function() {
     content: editedPost.content
   })
   isModalOpen.value = false
-}
-
-const deletePost = function(post) {
-  posts.value = posts.value.filter( postItem => postItem != post)
 }
 
 const isNotValidated = function() {
