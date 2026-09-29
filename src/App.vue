@@ -19,6 +19,9 @@
         <input v-model="post.title" type="text" placeholder="Title" class="p-4 border border-gray-200 w-full">
       </div>
       <div class="mb-4">
+        <input ref="inputImage" type="file" class="p-4 border border-gray-200 w-full">
+      </div>
+      <div class="mb-4">
         <textarea v-model="post.content" placeholder="Content" class="p-4 border border-gray-200 w-full"></textarea>
       </div>
 
@@ -46,8 +49,12 @@
 </template>
 
 <script setup>
-import {computed, provide, reactive, ref, watch} from "vue"
+import {onMounted, computed, provide, reactive, ref, watch} from "vue"
 import PostItem from "@/components/post/PostItem.vue"
+
+onMounted(() => {
+  console.log(inputImage.value)
+})
 
 const posts = ref([
   {
@@ -68,6 +75,7 @@ const posts = ref([
 ])
 const isModalOpen = ref(false)
 const errors = ref([])
+const inputImage = ref(null)
 const post = reactive({
   title: '',
   content: '',
@@ -94,6 +102,7 @@ const storePost = function() {
     title: '',
     content: '',
   })
+  inputImage.value.value = null;
 }
 
 const editPost = function(post) {
