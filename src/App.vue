@@ -1,4 +1,5 @@
 <template>
+  <h1 class="w-1/2 mx-auto p-4 mb-4 flex items-center">Vue 3 Composition Api</h1>
   <div v-if="isModalOpen" @click="isModalOpen = false" class="modal-shadow">
     <div @click.stop class="modal bg-white border border-gray-200 p-4 mb-4">
       <div class="mb-4">
@@ -31,28 +32,38 @@
         <a @click.prevent="storePost" gref="#" class="inline block px-3 py-3 bg-sky-600 border border-sky-700 text-white">Save Post</a>
       </div>
     </div>
-    <div>
-      <PostItem v-for="post in posts" :post="post" @editpost="editPost"></PostItem>
+    <div class="flex">
+      <div class="w-1/2 mr-4">
+        <h3 class="mb-4">Posts</h3>
+        <PostItem v-for="post in posts" :post="post" @editpost="editPost"></PostItem>
+      </div>
+      <div class="w-1/2">
+        <h3 class="mb-4">Favorite Posts</h3>
+        <PostItem v-for="post in favoritePosts" :post="post" @editpost="editPost"></PostItem>
+      </div>
     </div>
    </div>
 </template>
 
 <script setup>
-import {provide, reactive, ref, watch} from "vue"
+import {computed, provide, reactive, ref, watch} from "vue"
 import PostItem from "@/components/post/PostItem.vue"
 
 const posts = ref([
   {
     title: 'FIRST',
-    content: 'First post'
+    content: 'First post',
+    is_favorite: false
   },
   {
     title: 'SECOND',
-    content: 'Second post'
+    content: 'Second post',
+    is_favorite: false
   },
   {
     title: 'THIRD',
-    content: 'Third post'
+    content: 'Third post',
+    is_favorite: false
   },
 ])
 const isModalOpen = ref(false)
@@ -60,11 +71,14 @@ const errors = ref([])
 const post = reactive({
   title: '',
   content: '',
+  is_favorite: false
 })
 let editedPost = reactive({
   title: '',
   content: '',
 })
+
+const favoritePosts = computed(() => posts.value.filter(postItem => postItem.is_favorite === true))
 
 provide('posts', posts)
 
