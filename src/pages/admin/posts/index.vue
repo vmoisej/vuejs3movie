@@ -1,20 +1,42 @@
 <template>
   <div>
-    ADMIN POSTS
+    <div class="mb-4">
+      <h3>POSTS</h3>
+    </div>
   </div>
   <div>
-
+    <div>
+      <table class="w-full border border-gray-200">
+        <thead>
+          <tr>
+            <th class="bg-white border-b border-gray-200 text-left p-2">ID</th>
+            <th class="bg-white border-b border-gray-200 text-left p-2">TITLE</th>
+            <th class="bg-white border-b border-gray-200 text-left p-2">CONTENT</th>
+            <th class="bg-white border-b border-gray-200 text-left p-2">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="post in posts">
+            <td class="bg-white border-b border-gray-200 text-left p-2">{{ post.id }}</td>
+            <td class="bg-white border-b border-gray-200 text-left p-2 underline text-gray-500">
+              <router-link :to="{name: 'admin.posts.show', params: {id: post.id}}">{{ post.title }}</router-link>
+            </td>
+            <td class="bg-white border-b border-gray-200 text-left p-2">{{ post.content }}</td>
+            <td class="bg-white border-b border-gray-200 text-left p-2"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <script setup>
+import {onMounted, ref} from "vue"
+import axios from "axios"
 
 defineOptions({
   name: 'Index'
 })
-
-import {onMounted, ref} from "vue"
-import axios from "axios"
 
 const posts = ref([])
 
@@ -25,8 +47,7 @@ onMounted(() => {
 const getPosts = function() {
   axios.get('http://localhost:3000/posts')
       .then(res => {
-        console.log(res)
-        // posts.value =  res.data
+        posts.value =  res.data
       })
 }
 
