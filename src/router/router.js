@@ -14,6 +14,11 @@ const router = createRouter({
             name: 'admin.posts.index'
         },
         {
+            path: '/admin/posts/create',
+            component: () => import('@/pages/admin/posts/create.vue'),
+            name: 'admin.posts.create'
+        },
+        {
             path: '/admin/posts/:id',
             component: () => import('@/pages/admin/posts/show.vue'),
             name: 'admin.posts.show'
