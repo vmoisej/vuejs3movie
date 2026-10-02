@@ -22,7 +22,7 @@ defineOptions({
 })
 
 onMounted(() => {
-  console.log(111, useRoute().name)    // видасть помилку: undefined
+  // console.log(111, useRoute().name)    // видасть помилку: undefined
 })
 
 const router = useRouter()
